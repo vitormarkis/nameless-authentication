@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 export const userSchema = z.object({
+  id: z.number({ invalid_type_error: "O id precisa ser um número." }).int().nonnegative(),
   username: z
     .string()
     .min(6, { message: "O username precisa ter mais que 6 caracteres." })
@@ -13,11 +14,18 @@ export const userSchema = z.object({
   email: z.string().email(),
 })
 
-export type User = z.infer<typeof userSchema>
+export const loginUserSchema = userSchema.pick({
+  username: true,
+  password: true,
+})
+
 export const registerUserSchema = userSchema.pick({
   username: true,
   password: true,
   email: true,
   name: true,
 })
+
+export type User = z.infer<typeof userSchema>
 export type UserRegister = z.infer<typeof registerUserSchema>
+export type UserLogin = z.infer<typeof loginUserSchema>
