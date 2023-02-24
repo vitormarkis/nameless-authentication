@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+
+:root,
+input {
+  font-family: Inter;
+}
+
+input {
+  padding: 0.5rem;
+  color: black;
+}
+
+input:focus {
+  outline-color: #000;
+  outline-offset: -2px;
+  outline-style: double;
+  box-shadow: 0 0 0 1px #000;
+}
