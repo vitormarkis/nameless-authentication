@@ -8,12 +8,12 @@ import { registerUserSchema, UserRegister } from "../../../schemas/user"
 function RegisterForm() {
   const { register, reset, handleSubmit } = useForm<UserRegister>()
   const [formMessage, setFormMessage] = useState<string | null>(null)
-  const [isSubmitting, setisSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const submitHandler: SubmitHandler<UserRegister> = async userForm => {
     try {
       const userData = registerUserSchema.parse(userForm)
-      setisSubmitting(true)
+      setIsSubmitting(true)
       const res = (await axios.post(baseURL + "/register", userData)) as AxiosResponse<{ msg: string }>
       console.log(res)
       setFormMessage(res.data.msg)
@@ -32,7 +32,7 @@ function RegisterForm() {
       const sqlError = axiosError.response?.data.sqlMessage
       setFormMessage([apiError, sqlError].find(e => Boolean(e)) as string)
     }
-    setisSubmitting(false)
+    setIsSubmitting(false)
   }
 
   // useEffect(() => {
@@ -41,7 +41,7 @@ function RegisterForm() {
 
   return (
     <div className="p-6 text-white flex bg-black/70 rounded-lg">
-      <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col gap-6 w-[400px]">
         <div>
           <h1 className="text-2xl">Junte-se a nós...</h1>
           <p className="text-sm text-gray-400">Crie sua conta preenchendo os campos abaixo.</p>
