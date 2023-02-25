@@ -10,7 +10,10 @@ export const userSchema = z.object({
     .string()
     .min(6, { message: "A senha precisa ter mais que 6 caracteres." })
     .max(16, { message: "A senha não pode ter mais que 16 caracteres." }),
-  name: z.string(),
+  name: z
+    .string()
+    .min(6, { message: "Você precisa colocar nome e sobrenome." })
+    .max(50, { message: "Limite de caracteres excedida." }),
   email: z.string().email(),
 })
 

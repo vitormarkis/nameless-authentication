@@ -3,7 +3,7 @@ import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 import { baseURL } from "../../../constants"
-import { loginUserSchema, UserLogin, UserRegister } from "../../../schemas/user"
+import { loginUserSchema, UserLogin } from "../../../schemas/user"
 
 function LoginForm() {
   const { register, reset, handleSubmit } = useForm<UserLogin>()
@@ -13,9 +13,11 @@ function LoginForm() {
     try {
       const userData = loginUserSchema.parse(userForm)
       setIsSubmitting(true)
-      const res = await axios.post(baseURL + "/login", userData)
+      const res = await axios.post(baseURL + "/login", userData, {
+        withCredentials: true,
+      })
 
-      console.log(res)
+      console.log(res.data)
       setFormMessage(res.data.msg)
       reset()
     } catch (error) {

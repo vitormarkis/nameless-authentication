@@ -36,15 +36,15 @@ export const login = (req: Request<{}, {}, UserLogin>, res: Response) => {
    * Checar se usuário possui algum cookie de acesso antes de prosseguir
    */
 
-  const { password, username } = loginUserSchema.parse(req.body)
+  const requestUser = loginUserSchema.parse(req.body)
   const q = "select * from users where username = ?"
 
-  connection.query<QueryUser[]>(q, [username], (error, result) => {
+  connection.query<QueryUser[]>(q, [requestUser.username], (error, result) => {
     if (error) return res.status(500).json(error)
     if (result.length === 0) return res.status(404).json({ msg: "Usuário não encontrado." })
-    const user = result[0]
+    const { password, ...user } = result[0]
 
-    const checkPassword = bcrypt.compareSync(password, user.password)
+    const checkPassword = bcrypt.compareSync(requestUser.password, password)
 
     if (!checkPassword) return res.status(400).json({ msg: "Senha incorreta." })
 
@@ -53,7 +53,11 @@ export const login = (req: Request<{}, {}, UserLogin>, res: Response) => {
       .cookie(ENCookies.ACCESS_TOKEN, token, {
         httpOnly: true,
       })
-      .json({ username: user.username, id: user.id })
+      .json({
+        msg: "Logado com sucesso!",
+        user,
+        token,
+      })
   })
 }
 
