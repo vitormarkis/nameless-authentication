@@ -1,5 +1,31 @@
+import { useQuery } from '@tanstack/react-query'
+import { api } from "../../../services/axios"
+import { IArticles } from "./types"
+
 const Articles: React.FC = () => {
-  return <div>Oi</div>
+  const { data: articles, isLoading, error } = useQuery<IArticles>({
+    queryKey: ["articles"],
+    queryFn: () => {
+      api.get("/articles").then(response => response.data)
+    },
+    staleTime: 1000 * 60, // 1 minuto
+  })
+
+  if(!articles || isLoading) {
+    return <div>Carregando...</div>
+  }
+
+  return (
+    <div>
+      {articles.map(article => {
+        return (
+          <div>
+            <h1>article.</h1>
+          </div>
+        )
+      })}
+    </div>
+  )
 }
 
 export default Articles
