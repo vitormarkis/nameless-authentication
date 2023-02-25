@@ -1,25 +1,25 @@
 import axios, { AxiosError } from "axios"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { baseURL } from "../../../constants"
 import { loginUserSchema, UserLogin } from "../../../schemas/user"
 
 function LoginForm() {
-  const { register, reset, handleSubmit } = useForm<UserLogin>()
+  const { register, handleSubmit } = useForm<UserLogin>()
   const [formMessage, setFormMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const navigate = useNavigate()
+
   const submitHandler: SubmitHandler<UserLogin> = async userForm => {
     try {
       const userData = loginUserSchema.parse(userForm)
       setIsSubmitting(true)
-      const res = await axios.post(baseURL + "/login", userData, {
+      await axios.post(baseURL + "/login", userData, {
         withCredentials: true,
       })
-
-      console.log(res.data)
-      setFormMessage(res.data.msg)
-      reset()
+      navigate("/articles")
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach(err => alert(err.message))
