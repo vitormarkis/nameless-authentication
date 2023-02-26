@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs"
 import { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 import { RowDataPacket } from "mysql2"
-import { ENCookies } from "../constants"
+import { ENCookies, ENKeys } from "../constants"
 import { loginUserSchema, registerUserSchema, User, UserLogin, UserRegister } from "../schemas/user"
 import { connection } from "../services/mysql"
 
@@ -48,7 +48,7 @@ export const login = (req: Request<{}, {}, UserLogin>, res: Response) => {
 
     if (!checkPassword) return res.status(400).json({ msg: "Senha incorreta." })
 
-    const token = jwt.sign({ id: user.id }, "namelessauth")
+    const token = jwt.sign({ id: user.id }, ENKeys.JWT_TOKEN_SECRET_KEY)
     return res
       .cookie(ENCookies.ACCESS_TOKEN, token, {
         httpOnly: true,

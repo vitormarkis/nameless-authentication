@@ -11,6 +11,7 @@ import Home from "./routes/root"
 
 import "./index.css"
 import queryClient from "./services/queryClient"
+import Profile from "./components/layouts/Profile"
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
         path: "/articles",
         element: <Articles />,
       },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
     ],
   },
 ])
@@ -38,7 +43,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <ReactQueryDevtools />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 )

@@ -19,7 +19,7 @@ function LoginForm() {
       await axios.post(baseURL + "/login", userData, {
         withCredentials: true,
       })
-      navigate("/articles")
+      navigate("/profile")
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach(err => alert(err.message))

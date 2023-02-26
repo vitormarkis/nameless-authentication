@@ -35,3 +35,9 @@ export const registerUserSchema = userSchema.pick({
 export type User = z.infer<typeof userSchema>;
 export type UserRegister = z.infer<typeof registerUserSchema>;
 export type UserLogin = z.infer<typeof loginUserSchema>;
+
+export interface UserProfile extends Omit<User, 'password'> {
+  cover_picture: string
+  avatar_picture: string
+  city: string
+}

@@ -22,7 +22,8 @@ const Articles: React.FC = () => {
       {articles.map(article => {
         return (
           <div>
-            <h1>article.</h1>
+            <h1>{article.title}</h1>
+            <p>{article.text}</p>
           </div>
         )
       })}
